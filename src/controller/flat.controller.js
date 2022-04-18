@@ -1,9 +1,10 @@
 const { Router} = require('express')
+const { auth } = require('../middleware/auth')
 const Flat = require('../models/flat.modal')
 
 const router = Router()
 
-router.post('/flat', async(req, res)=>{
+router.post('/flat',auth ,async(req, res)=>{
     try {
         const flat = await Flat.create(req.body)
         return res
@@ -17,7 +18,7 @@ router.post('/flat', async(req, res)=>{
         })
     }
 })
-router.get('/flat/:id', async(req, res)=>{
+router.get('/flat/:id',auth, async(req, res)=>{
     try {
         const flat = await Flat.findById(req.params.id).lean().exec()
         return res
@@ -32,7 +33,7 @@ router.get('/flat/:id', async(req, res)=>{
     }
 })
 
-router.get('/flats', async (req, res)=>{
+router.get('/flats',auth ,async (req, res)=>{
     try {
             const page = req.query.page || 1
             const limit = req.query.limit || 8
